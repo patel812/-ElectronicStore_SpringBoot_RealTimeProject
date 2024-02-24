@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static java.util.UUID.randomUUID;
 
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
 
+    //Create User **********************************************************************************
     @Override
     public UserDto createUser(UserDto userDto) {
 
@@ -37,32 +39,91 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
+    //Update User **********************************************************************************
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        return null;
+
+        // 1. Find by id
+        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+
+        // 2. Set update data & Get update data
+        //user set all data,  UserDto have all data
+        user.setName(userDto.getName());
+        //email update
+        //user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setGender(userDto.getGender());
+        user.setAbout(userDto.getAbout());
+        user.setImageName(userDto.getImageName());
+
+
+        // 3. Save update data
+        //We are getting user entity in updateUser(user)
+        User updatedUser = userRepository.save(user);
+
+        // 4. Entity -> Dto
+        UserDto updatedDto = entityToDto(updatedUser);
+
+        return updatedDto;
     }
 
+
+    //Delete User **********************************************************************************
     @Override
     public void deleteUser(String userId) {
 
+       // 1. Find User by Id (From Entity)
+       User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found by id"));
+
+       // 2. Delete user (delete do not have return type)
+       userRepository.delete(user);
+
     }
 
+
+
+    //Get All User **********************************************************************************
     @Override
     public List<UserDto> getAllUser() {
-        return null;
+
+        // 1. Getting all User in List
+        List<User> users = userRepository.findAll();
+
+        // 2. List of user convert into list of Dto (We use Stream API)
+        // map will give one by one data of user & then entity -> DTo of (user)
+        List<UserDto> dtoList = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+
+        return dtoList;
     }
 
+
+
+    //Get User By Id **********************************************************************************
     @Override
     public UserDto getUserById(String userId) {
-        return null;
+
+        // 1. Find by id of User
+        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found as per given Id!!"));
+
+        // 2. Convert user entity to Dto & Return
+        return entityToDto(user);
     }
 
+
+
+    //Get User by Email Id **********************************************************************************
     @Override
     public UserDto getUserByEmail(String email) {
+
+
+
         return null;
     }
 
+
+
+
+    //Search User **********************************************************************************
     @Override
     public List<UserDto> searchUser(String keyword) {
         return null;
