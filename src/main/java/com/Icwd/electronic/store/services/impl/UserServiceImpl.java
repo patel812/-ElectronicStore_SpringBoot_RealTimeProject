@@ -4,6 +4,7 @@ import com.Icwd.electronic.store.dtos.UserDto;
 import com.Icwd.electronic.store.entities.User;
 import com.Icwd.electronic.store.repositories.UserRepository;
 import com.Icwd.electronic.store.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,10 @@ public class UserServiceImpl implements UserService {
     //To get object of Repository for interact with database
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper mapper;
+
 
 
     //Create User **********************************************************************************
@@ -150,33 +155,39 @@ public class UserServiceImpl implements UserService {
     // Entity -> Dto (Convert method)
     private UserDto entityToDto(User savedUser) {
 
-        UserDto userDto = UserDto.builder()
-                .userId(savedUser.getUserId())
-                .name(savedUser.getName())
-                .email(savedUser.getEmail())
-                .password(savedUser.getPassword())
-                .about(savedUser.getAbout())
-                .gender(savedUser.getGender())
-                .imageName(savedUser.getImageName())
-                .build();
+        //Manual method to  convert entity to Dto
+//        UserDto userDto = UserDto.builder()
+//                .userId(savedUser.getUserId())
+//                .name(savedUser.getName())
+//                .email(savedUser.getEmail())
+//                .password(savedUser.getPassword())
+//                .about(savedUser.getAbout())
+//                .gender(savedUser.getGender())
+//                .imageName(savedUser.getImageName())
+//                .build();
 
-        return userDto;
+        // 1. Library (modelMapper) to convert - entity -> Dto
+            return mapper.map(savedUser, UserDto.class);
     }
+
 
     // DTO -> Entity (Convert method)
     private User dtoToEntity(UserDto userDto) {
 
-        User user = User.builder()
-                .userId(userDto.getUserId())
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .about(userDto.getAbout())
-                .gender(userDto.getGender())
-                .imageName(userDto.getImageName())
-                .build();
+        //Manual method to convert Dto to entity
 
-        return user;
+//        User user = User.builder()
+//                .userId(userDto.getUserId())
+//                .name(userDto.getName())
+//                .email(userDto.getEmail())
+//                .password(userDto.getPassword())
+//                .about(userDto.getAbout())
+//                .gender(userDto.getGender())
+//                .imageName(userDto.getImageName())
+//                .build();
+
+        // 1. Library (modelMapper) to covert - Dto to entity
+        return mapper.map(userDto, User.class);
     }
 
 
