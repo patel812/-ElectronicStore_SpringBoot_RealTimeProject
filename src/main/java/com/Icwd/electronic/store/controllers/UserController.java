@@ -1,5 +1,6 @@
 package com.Icwd.electronic.store.controllers;
 
+import com.Icwd.electronic.store.dtos.ApiResponseMessage;
 import com.Icwd.electronic.store.dtos.UserDto;
 import com.Icwd.electronic.store.entities.User;
 import com.Icwd.electronic.store.services.UserService;
@@ -49,14 +50,21 @@ public class UserController {
 
     //Delete Api---------------------------------------------------------------------------------------
     @DeleteMapping("/{userId}")
-    //                  Return Type
-    public ResponseEntity<String> deleteUser(@PathVariable String userId){
+    //                 Return Type class message
+    public ResponseEntity<ApiResponseMessage> deleteUser(@PathVariable String userId){
 
             // Don't hold data for delete
             userService.deleteUser(userId);
 
-            //Only pass return type in response as a String ""
-        return new ResponseEntity<>("User is deleted Successfully!!", HttpStatus.OK);
+        ApiResponseMessage message  =  ApiResponseMessage
+                .builder() //Using builder pattern for message opening
+                .message("User is deleted Successfully!!") //message use of class ApiResponseMessage
+                .success(true) // success use as a boolean of class ApiResponseMessage
+                .status(HttpStatus.OK) //status use for Http resp of class ApiResponseMessage
+                .build(); // builder pattern closing
+
+                //Only pass return type in response as a message ""
+                return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 
