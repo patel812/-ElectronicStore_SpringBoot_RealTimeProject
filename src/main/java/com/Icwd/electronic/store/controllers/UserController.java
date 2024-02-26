@@ -4,6 +4,7 @@ import com.Icwd.electronic.store.dtos.ApiResponseMessage;
 import com.Icwd.electronic.store.dtos.UserDto;
 import com.Icwd.electronic.store.entities.User;
 import com.Icwd.electronic.store.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UserController {
     //Create API------------------------------------------------------------------------------------
     @PostMapping
     //     Status code | Return type        | To send data | To get Data
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 
        UserDto userDto1 = userService.createUser(userDto);
        //                             data  | Status code
@@ -39,7 +40,7 @@ public class UserController {
     //Update API-------------------------------------------------------------------------------------
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable String userId, @Valid @RequestBody UserDto userDto){
 
        UserDto userDto2 = userService.updateUser(userDto, userId);
 
