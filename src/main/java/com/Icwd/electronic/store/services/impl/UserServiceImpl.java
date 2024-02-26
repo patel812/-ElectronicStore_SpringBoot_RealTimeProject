@@ -7,6 +7,9 @@ import com.Icwd.electronic.store.repositories.UserRepository;
 import com.Icwd.electronic.store.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,11 +92,17 @@ public class UserServiceImpl implements UserService {
 
 
     //Get All User **********************************************************************************
-    @Override
-    public List<UserDto> getAllUser() {
+    @Override                       // 1. Pagination
+    public List<UserDto> getAllUser(int pageNumber, int pageSize) {
 
-        // 1. Getting all User in List
-        List<User> users = userRepository.findAll();
+        // 2. Pagination
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        // 3. Pagination
+        Page<User> page = userRepository.findAll(pageable);
+
+        // 1. User List
+        List<User> users = page.getContent();
 
         // 2. List of user convert into list of Dto (We use Stream API)
         // map will give one by one data of user & then entity -> DTo of (user)
