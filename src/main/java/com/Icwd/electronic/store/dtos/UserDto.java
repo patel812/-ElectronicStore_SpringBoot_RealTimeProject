@@ -1,5 +1,6 @@
 package com.Icwd.electronic.store.dtos;
 
+import com.Icwd.electronic.store.validate.ImageNameValid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 
@@ -40,7 +41,7 @@ public class UserDto {
     @NotBlank(message = "Write something about yourself !!")
     private String about;
 
-
+    @ImageNameValid
     private String imageName;
 
 
