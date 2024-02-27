@@ -1,6 +1,7 @@
 package com.Icwd.electronic.store.controllers;
 
 import com.Icwd.electronic.store.dtos.ApiResponseMessage;
+import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.dtos.UserDto;
 import com.Icwd.electronic.store.entities.User;
 import com.Icwd.electronic.store.services.UserService;
@@ -72,7 +73,7 @@ public class UserController {
 
     //Get All Api------------------------------------------------------------------------------
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUser
+    public ResponseEntity<PageableResponse<UserDto>> getAllUser
     (
             //For Pagination
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,

@@ -1,8 +1,10 @@
 package com.Icwd.electronic.store.services.impl;
 
+import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.dtos.UserDto;
 import com.Icwd.electronic.store.entities.User;
 import com.Icwd.electronic.store.exceptions.ResourceNotFoundException;
+import com.Icwd.electronic.store.helper.Helper;
 import com.Icwd.electronic.store.repositories.UserRepository;
 import com.Icwd.electronic.store.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     //Get All User **********************************************************************************
     @Override                       // 1. Pagination                 2. Sorting
-    public List<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getAllUser(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
         //2. Sort
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
@@ -107,17 +109,9 @@ public class UserServiceImpl implements UserService {
         // 3. Pagination
         Page<User> page = userRepository.findAll(pageable);
 
+        PageableResponse<UserDto> response = Helper.getPageableResponse(page, UserDto.class);
 
-
-
-        // 1. User List
-        List<User> users = page.getContent();
-
-        // 2. List of user convert into list of Dto (We use Stream API)
-        // map will give one by one data of user & then entity -> DTo of (user)
-        List<UserDto> dtoList = users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
-
-        return dtoList;
+        return response;
     }
 
 
