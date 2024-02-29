@@ -5,10 +5,13 @@ import com.Icwd.electronic.store.dtos.ApiResponseMessage;
 import com.Icwd.electronic.store.dtos.CategoryDto;
 import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/categories")
@@ -18,14 +21,17 @@ public class CategoryController {
     private CategoryService categoryService;
 
 
+
     //Create----------------------------------------------------------------------------------
     @PostMapping
-    public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<CategoryDto> create(@Valid @RequestBody CategoryDto categoryDto){
+
         //Call Service to save object
         CategoryDto categoryDto1 = categoryService.create(categoryDto);
         //Return
         return new  ResponseEntity<>(categoryDto1, HttpStatus.CREATED);
     }
+
 
 
     //Update-----------------------------------------------------------------------------------
@@ -66,7 +72,7 @@ public class CategoryController {
     public ResponseEntity<PageableResponse<CategoryDto>> getAll
     (
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "0", required = false ) int pageSize,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false ) int pageSize,
 
             @RequestParam(value = "sortBy", defaultValue = "title", required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir

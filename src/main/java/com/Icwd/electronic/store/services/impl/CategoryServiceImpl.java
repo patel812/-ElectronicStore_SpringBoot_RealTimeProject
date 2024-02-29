@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -31,7 +32,16 @@ public class CategoryServiceImpl implements CategoryService {
     //Save------------------------------------------------------------------
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
+
+
+        //Creating CategoryId : randomly
+
+        String categoryId = UUID.randomUUID().toString();
+        categoryDto.setCategoryId(categoryId);
         Category category = mapper.map(categoryDto, Category.class);
+
+
+
         Category saveCategory = categoryRepository.save(category);
         return mapper.map(saveCategory, CategoryDto.class);
     }
