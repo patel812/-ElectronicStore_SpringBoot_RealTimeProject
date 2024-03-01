@@ -2,14 +2,19 @@ package com.Icwd.electronic.store.controllers;
 
 
 import com.Icwd.electronic.store.dtos.ApiResponseMessage;
+import com.Icwd.electronic.store.dtos.ImageResponse;
 import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.dtos.ProductDto;
+import com.Icwd.electronic.store.services.FileService;
 import com.Icwd.electronic.store.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/products")
@@ -17,6 +22,12 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${product.image.path}")
+    private String imagePath;
 
 
     //Create Api----------------------------------------------------------------------------------------------
@@ -111,5 +122,39 @@ public class ProductController {
 
         return new ResponseEntity<>(searchResponse, HttpStatus.OK);
     }
+
+
+
+    //Upload Image
+    @PostMapping("/image/{productId}")
+    public ResponseEntity<ImageResponse> uploadProductImage(
+            @PathVariable String productId,
+            @RequestParam ("productImage") MultipartFile image
+            ) throws IOException {
+
+        String fileName = fileService.uploadFile(image, imagePath);
+        //Get User
+        ProductDto productDto = productService.getSingle(productId);
+
+        productDto.setProductImageName(fileName);
+        ProductDto updateProduct = productService.update(productDto, productId);
+
+        ImageResponse imageResponse = ImageResponse.builder().imageName(updateProduct.getProductImageName())
+                .success(true)
+                .status(HttpStatus.OK)
+                .message("Your Image will upload")
+                .build();
+
+        return new ResponseEntity<>(imageResponse, HttpStatus.OK);
+
+    }
+
+
+
+    //Serve image
+
+
+
+
 
 }
