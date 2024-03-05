@@ -1,5 +1,6 @@
 package com.Icwd.electronic.store.dtos;
 
+import com.Icwd.electronic.store.entities.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class ProductDto {
 
     private String productId;
@@ -25,5 +27,8 @@ public class ProductDto {
     private boolean live;
     private boolean stock;
     private String productImageName;
+    private CategoryDto category;
+
+
 
 }

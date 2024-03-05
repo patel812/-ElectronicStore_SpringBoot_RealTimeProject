@@ -4,7 +4,7 @@ package com.Icwd.electronic.store.services;
 import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.dtos.ProductDto;
 
-import java.util.List;
+
 
 public interface ProductService {
 
@@ -28,6 +28,12 @@ public interface ProductService {
 
     //Search Product
     PageableResponse<ProductDto> searchByTitle(String subTitle, int pageNumber, int pageSize, String sortBy, String sortDir);
+
+
+    //Create product with category
+    ProductDto createWithCategory(ProductDto productDto, String categoryId);
+
+
 
     //Other Methods
 

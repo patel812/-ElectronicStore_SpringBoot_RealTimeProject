@@ -1,10 +1,8 @@
 package com.Icwd.electronic.store.entities;
 
+import com.Icwd.electronic.store.dtos.CategoryDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -12,6 +10,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "Products")
 public class Product {
@@ -34,6 +33,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
+
 
 
 

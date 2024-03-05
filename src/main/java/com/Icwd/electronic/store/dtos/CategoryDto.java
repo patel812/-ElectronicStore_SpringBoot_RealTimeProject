@@ -1,5 +1,6 @@
 package com.Icwd.electronic.store.dtos;
 
+import com.Icwd.electronic.store.entities.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
@@ -11,10 +12,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 @ToString
 
-public class CategoryDto {
+public class CategoryDto extends Category {
 
     private String categoryId;
 

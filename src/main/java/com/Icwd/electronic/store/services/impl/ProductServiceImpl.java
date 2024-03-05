@@ -1,10 +1,13 @@
 package com.Icwd.electronic.store.services.impl;
 
+import com.Icwd.electronic.store.dtos.CategoryDto;
 import com.Icwd.electronic.store.dtos.PageableResponse;
 import com.Icwd.electronic.store.dtos.ProductDto;
+import com.Icwd.electronic.store.entities.Category;
 import com.Icwd.electronic.store.entities.Product;
 import com.Icwd.electronic.store.exceptions.ResourceNotFoundException;
 import com.Icwd.electronic.store.helper.Helper;
+import com.Icwd.electronic.store.repositories.CategoryRepository;
 import com.Icwd.electronic.store.repositories.ProductRepository;
 import com.Icwd.electronic.store.services.ProductService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,6 +32,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
 
     //Create implementation----------------------------------------------------------------------------------
@@ -127,5 +135,29 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> page = productRepository.findByTitleContaining(subTitle, pageable);
 
         return Helper.getPageableResponse(page, ProductDto.class);
+    }
+
+
+
+    //Create product with category Api
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+
+
+        //Fetch the category from db
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found !!"));
+        Product product = mapper.map(productDto, Product.class);
+
+        //Create product id randomly
+        String productId = UUID.randomUUID().toString();
+        productDto.setProductId(productId);
+
+        //Date
+        productDto.setAddedDate(new Date());
+        product.setCategory(category);
+
+        Product saveProduct = productRepository.save(product);
+        return mapper.map(saveProduct, ProductDto.class);
+
     }
 }
