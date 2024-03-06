@@ -112,4 +112,21 @@ public class CategoryController {
     }
 
 
+    //Update category of product
+    @PutMapping("/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateCategoryOfProduct
+    (
+            @PathVariable String categoryId ,
+            @PathVariable String productId
+    )
+
+    {
+        ProductDto productDto = productService.updateCategory(productId, categoryId);
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
+
+
+
+
+
 }

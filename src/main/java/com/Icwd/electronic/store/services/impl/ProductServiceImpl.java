@@ -160,4 +160,20 @@ public class ProductServiceImpl implements ProductService {
         return mapper.map(saveProduct, ProductDto.class);
 
     }
+
+
+
+    //update
+    @Override
+    public ProductDto updateCategory(String productId, String categoryId) {
+
+        //Product fetch
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product Id not found!!"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category Id not found !!"));
+
+        product.setCategory(category);
+        Product saveProduct = productRepository.save(product);
+
+        return mapper.map(saveProduct, ProductDto.class);
+    }
 }
