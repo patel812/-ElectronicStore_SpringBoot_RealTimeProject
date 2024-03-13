@@ -1,8 +1,5 @@
 package com.Icwd.electronic.store.dtos;
 
-import com.Icwd.electronic.store.entities.OrderItem;
-import com.Icwd.electronic.store.entities.User;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;

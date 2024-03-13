@@ -2,16 +2,14 @@ package com.Icwd.electronic.store.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
@@ -29,4 +27,5 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
 }
