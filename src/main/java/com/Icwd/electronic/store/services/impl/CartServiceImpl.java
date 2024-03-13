@@ -15,6 +15,7 @@ import com.Icwd.electronic.store.repositories.UserRepository;
 import com.Icwd.electronic.store.services.CartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+@Service
 public class CartServiceImpl implements CartService {
 
     @Autowired
@@ -33,6 +35,7 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartRepository cartRepository;
+
 
     @Autowired
     private ModelMapper mapper;
