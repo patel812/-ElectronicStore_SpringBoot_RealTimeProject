@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 
     //Create User **********************************************************************************
@@ -40,6 +44,9 @@ public class UserServiceImpl implements UserService {
         // generate unique id in string format
         String userId = UUID.randomUUID().toString();
         userDto.setUserId(userId);
+
+        //Encoding password
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         // dto -> entity
         User user = dtoToEntity(userDto);

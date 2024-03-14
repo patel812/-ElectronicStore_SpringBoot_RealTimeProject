@@ -3,8 +3,11 @@ package com.Icwd.electronic.store.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 //Lombok
@@ -19,7 +22,7 @@ import java.util.List;
 @Entity
 
 @Table(name = "Users")
-public class User {
+public class User implements UserDetails {
 
     //Primary key or id
     @Id
@@ -31,7 +34,7 @@ public class User {
     @Column(name = "user_email" , unique = true)
     private String email;
 
-    @Column(name = "user_password", length = 10)
+    @Column(name = "user_password", length = 500)
     private String password;
 
     private String gender;
@@ -46,4 +49,45 @@ public class User {
     private List<Order> orders = new ArrayList<>();
 
 
+
+
+
+    //Spring Security----------------------------------------------------------------
+
+    //Must have to implements
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public String getPassword(){
+        return this.password;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
